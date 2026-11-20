@@ -1,26 +1,416 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/*
+ * Design tokens — extracted from the Figma file
+ * "Personal Portfolio" (mobile frame, node 1:380).
+ *
+ * Tailwind v4 is configured in CSS: every variable in @theme becomes
+ * both a CSS custom property (var(--color-email)) and a utility class
+ * (bg-email, text-title, rounded-card, shadow-card, p-gutter, ...).
+ *
+ * Rule: components use these tokens only. No hex codes or one-off
+ * pixel values in JSX.
+ */
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@theme {
+  /* ---------- Colours ---------- */
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  /* Remove Tailwind's default palette so only brand colours exist. */
+  --color-*: initial;
+
+  --color-white: #ffffff;
+  --color-black: #000000;
+
+  /* Page (vertical gradient behind everything) */
+  --color-canvas-top: #142131;
+  --color-canvas-bottom: #000113;
+  --color-glow-warm: #f37261; /* blurred blob, top left */
+  --color-glow-violet: #842cf2; /* blurred blob, bottom */
+
+  /* Profile panel (vertical gradient) */
+  --color-panel-light: #2f3d59;
+  --color-panel-dark: #0b1326;
+
+  /* Text */
+  --color-ink: #ffffff; /* primary text on dark */
+  --color-ink-muted: rgb(255 255 255 / 0.7); /* @handle under name */
+  --color-ink-inverse: #000000; /* text on light cards */
+
+  /* Social cards (each is a top-to-bottom gradient, except email) */
+  --color-email: #143061;
+  --color-facebook-light: #35a5ee;
+  --color-facebook-dark: #1264d6;
+  --color-github-light: #25262f;
+  --color-github-dark: #0c0d16;
+  --color-instagram-light: #313030; /* Figma card colours in the design */
+  --color-instagram-dark: #121313;
+  --color-linkedin-light: #fbfbfc; /* Dev card colours in the design */
+  --color-linkedin-dark: #dbdbdb;
+
+  /* Small UI */
+  --color-chip: #d9d9d9; /* "Follow" pill */
+  --color-border: #000000;
+  --color-line: rgb(255 255 255 / 0.1); /* hairline borders on dark */
+  --color-surface: rgb(255 255 255 / 0.06); /* inputs, active nav item */
+
+  /* ---------- Fonts ---------- */
+  /* See the @theme inline block below. */
+
+  /* ---------- Type scale ---------- */
+  --text-title: 1.5rem; /* 24px, name (Poppins SemiBold) */
+  --text-title--line-height: 1.0625rem; /* 17px as in Figma */
+  --text-handle: 0.875rem; /* 14px, @handle */
+  --text-handle--line-height: 1.0625rem;
+  --text-body: 0.75rem; /* 12px, bio lines, card labels */
+  --text-body--line-height: 0.9375rem; /* 15px */
+  --text-caption: 0.625rem; /* 10px, card handles, location */
+  --text-caption--line-height: 0.75rem; /* 12px */
+  --text-micro: 0.5625rem; /* 9px, "Follow" chip */
+  --text-micro--line-height: 0.6875rem; /* 11px */
+
+  --tracking-title: -0.03125rem; /* -0.5px */
+  --tracking-meta: 0.0625rem; /* 1px, bio + location */
+
+  /* ---------- Spacing ---------- */
+  /* Tailwind's 4px scale (p-2, gap-3, ...) still works; these are
+     named values from the design. */
+  --spacing-gutter: 1.25rem; /* 20px, page side padding */
+  --spacing-grid: 0.6875rem; /* 11px, gap between cards */
+  --spacing-card-x: 0.875rem; /* 14px, card padding inline */
+  --spacing-card-y: 0.625rem; /* 10px, card padding block */
+  --spacing-stack: 0.4375rem; /* 7px, gap in text stacks */
+  --spacing-section: 1.6875rem; /* 27px, between blocks in the profile panel */
+  --spacing-avatar: 12.5rem; /* 200px, avatar size */
+
+  /* ---------- Radius ---------- */
+  --radius-chip: 0.3125rem; /* 5px */
+  --radius-card: 0.9375rem; /* 15px, social cards */
+  --radius-inset: 0.6875rem; /* 11px, things inside a card (card radius - 4px) */
+  --radius-panel: 2rem; /* 32px, profile panel + avatar */
+
+  /* ---------- Shadows & effects ---------- */
+  --shadow-card: 0 4px 4px 0 rgb(0 0 0 / 0.25);
+  --inset-shadow-bevel:
+    inset 1px 1px 1px 0 #ffffff, inset -0.5px -1px 1px 0 rgb(0 0 0 / 0.4);
+  --blur-glow: 125px; /* top blob */
+  --blur-glow-sm: 75px; /* bottom blob */
+
+  /* ---------- Motion ---------- */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Entrance: fade + rise. Pair with .stagger for a cascade. */
+  --animate-rise: rise 0.7s var(--ease-out-expo) backwards;
+  /* Entrance for the avatar: fade + gentle scale-up */
+  --animate-pop: pop 0.8s var(--ease-out-expo) backwards;
+  /* Slow ambient pulse on the background glows */
+  --animate-breathe: breathe 9s ease-in-out infinite;
+
+  /* ---- Looping animations ----
+     They animate the individual `translate` / `scale` / `rotate`
+     properties, so they combine with Motion's hover transforms instead of
+     overriding them. */
+  --animate-wander: wander 24s ease-in-out infinite; /* glows drift around */
+  --animate-float: float 6s ease-in-out infinite; /* avatar bob */
+  --animate-float-sm: float-sm 4s ease-in-out infinite; /* icon bob */
+  --animate-orbit: orbit 6s linear infinite; /* avatar ring */
+  --animate-shimmer: shimmer 6s linear infinite; /* gradient text */
+  --animate-marquee: marquee 28s linear infinite; /* skills strip */
+  --animate-shine: shine 8s ease-in-out infinite; /* light sweep on cards */
+  --animate-twinkle: twinkle 12s ease-in-out infinite; /* particles */
+  --animate-bob: bob 2.6s ease-in-out infinite; /* 💻 */
+  --animate-flicker: flicker 3.2s ease-in-out infinite; /* ⚡ */
+  --animate-blink: blink 1s steps(2, start) infinite; /* typing caret */
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+  }
+  @keyframes pop {
+    from {
+      opacity: 0;
+      transform: scale(0.9) translateY(10px);
+    }
+  }
+  @keyframes breathe {
+    50% {
+      opacity: 0.7;
+      scale: 1.08;
+    }
+  }
+  @keyframes wander {
+    33% {
+      translate: 40px 24px;
+    }
+    66% {
+      translate: -28px 14px;
+    }
+  }
+  @keyframes float {
+    50% {
+      translate: 0 -6px;
+    }
+  }
+  @keyframes float-sm {
+    50% {
+      translate: 0 -3px;
+    }
+  }
+  @keyframes orbit {
+    to {
+      rotate: 360deg;
+    }
+  }
+  @keyframes shimmer {
+    to {
+      background-position: 200% center;
+    }
+  }
+  @keyframes marquee {
+    to {
+      translate: -50% 0;
+    }
+  }
+  @keyframes shine {
+    0% {
+      translate: -120% 0;
+    }
+    14%,
+    100% {
+      translate: 120% 0;
+    }
+  }
+  @keyframes twinkle {
+    0% {
+      translate: 0 0;
+      opacity: 0;
+    }
+    20% {
+      opacity: 0.9;
+    }
+    80% {
+      opacity: 0.5;
+    }
+    100% {
+      translate: 0 -160px;
+      opacity: 0;
+    }
+  }
+  @keyframes bob {
+    50% {
+      translate: 0 -2px;
+      rotate: -8deg;
+    }
+  }
+  @keyframes flicker {
+    0%,
+    40%,
+    100% {
+      opacity: 1;
+      scale: 1;
+    }
+    45% {
+      opacity: 0.35;
+      scale: 0.85;
+    }
+    52% {
+      opacity: 1;
+      scale: 1.2;
+    }
+    60% {
+      scale: 1;
+    }
+  }
+  @keyframes blink {
+    to {
+      visibility: hidden;
+    }
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Fonts: --font-poppins / --font-inter are created by next/font in
+   layout.tsx and set on <html>, so these tokens are resolved where
+   they're used ("inline") instead of at :root. */
+@theme inline {
+  --font-display: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Social grid: wide left column, narrow right column (196 : 114 in Figma) */
+@utility grid-cols-socials {
+  grid-template-columns: minmax(0, 196fr) minmax(0, 114fr);
+}
+
+/* Cuts the avatar notch out of the top of the profile panel.
+   The shape is the Figma "Subtract" path (public/backgrounds/panel-notch.svg). */
+@utility mask-notch {
+  mask-image: url("/backgrounds/panel-notch.svg"), linear-gradient(#000 0 0);
+  mask-position: top center, 0 0;
+  mask-size: 236px 108px, 100% 100%;
+  mask-repeat: no-repeat;
+  mask-composite: exclude;
+}
+
+/* Cascade delay: set --i (0, 1, 2…) on each element, e.g. style={stagger(2)} */
+@utility stagger {
+  animation-delay: calc(var(--i, 0) * 70ms);
+}
+
+/* Puts each looping item at a different point in its cycle (uses --i) */
+@utility loop-offset {
+  animation-delay: calc(var(--i, 0) * -0.9s);
+}
+
+/* Name and page titles: a band of the glow colours sweeps through the text */
+@utility text-shimmer {
+  background-image: linear-gradient(
+    90deg,
+    var(--color-white) 0%,
+    var(--color-white) 30%,
+    var(--color-glow-warm) 42%,
+    var(--color-glow-violet) 54%,
+    var(--color-white) 66%,
+    var(--color-white) 100%
+  );
+  background-size: 200% auto;
+  background-clip: text;
+  color: transparent;
+  animation: var(--animate-shimmer);
+}
+
+/* A streak of light crosses the card every few seconds, cards in turn (--i) */
+@utility shine {
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      105deg,
+      transparent 30%,
+      rgb(255 255 255 / 0.16) 50%,
+      transparent 70%
+    );
+    translate: -120% 0;
+    animation: var(--animate-shine);
+    animation-delay: calc(var(--i, 0) * 0.6s + 1.5s);
+  }
+}
+
+/* Background glows: pulse + slow wander (scale and translate don't clash) */
+@utility glow-drift {
+  animation: var(--animate-breathe), var(--animate-wander);
+}
+/* Second glow runs half a cycle out of step, wandering the other way */
+@utility glow-drift-alt {
+  animation: var(--animate-breathe), var(--animate-wander);
+  animation-delay: -4.5s, -12s;
+  animation-direction: normal, reverse;
+}
+
+/* Fades the ends of a scrolling strip */
+@utility fade-edges {
+  mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+}
+
+/* ---------- Page transitions (React <ViewTransition>) ---------- */
+
+/* Content slides left going forward, right going back */
+::view-transition-old(.nav-forward) {
+  --slide-offset: -60px;
+  animation:
+    150ms ease-in both fade reverse,
+    400ms var(--ease-out-expo) both slide reverse;
+}
+::view-transition-new(.nav-forward) {
+  --slide-offset: 60px;
+  animation:
+    210ms ease-out 150ms both fade,
+    400ms var(--ease-out-expo) both slide;
+}
+::view-transition-old(.nav-back) {
+  --slide-offset: 60px;
+  animation:
+    150ms ease-in both fade reverse,
+    400ms var(--ease-out-expo) both slide reverse;
+}
+::view-transition-new(.nav-back) {
+  --slide-offset: -60px;
+  animation:
+    210ms ease-out 150ms both fade,
+    400ms var(--ease-out-expo) both slide;
+}
+
+/* Project title morphs from its card into the project page heading */
+::view-transition-group(.morph) {
+  animation-duration: 450ms;
+  animation-timing-function: var(--ease-out-expo);
+}
+::view-transition-image-pair(.morph) {
+  animation-name: via-blur;
+}
+
+/* The nav stays put while pages slide underneath it */
+::view-transition-group(site-nav) {
+  animation: none;
+  z-index: 100;
+}
+::view-transition-old(site-nav) {
+  display: none;
+}
+::view-transition-new(site-nav) {
+  animation: none;
+}
+
+/* Clicks pass through to the live page during a transition */
+::view-transition {
+  pointer-events: none;
+}
+
+@keyframes fade {
+  from {
+    filter: blur(3px);
+    opacity: 0;
+  }
+}
+@keyframes slide {
+  from {
+    translate: var(--slide-offset);
+  }
+}
+@keyframes via-blur {
+  30% {
+    filter: blur(3px);
+  }
+}
+
+/* Respect the OS "reduce motion" setting everywhere */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after,
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0s !important;
+  }
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    @apply bg-canvas-bottom font-sans text-ink antialiased;
+  }
+
+  /* Visible keyboard focus on every link, button and field */
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-white;
+  }
 }
