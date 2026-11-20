@@ -66,11 +66,17 @@ export function SocialLinkCard({
             transition={spring}
             className={`relative shrink-0 ${theme.iconBox}`}
           >
+            {/* PNG rendered at 4x from design/social-icons/*.svg. Safari draws
+                SVG filters (the bevel and shadows) at 1x, so the SVGs looked
+                blurry there; a high-res PNG is sharp in every browser.
+                sizes="176px" lets 3x phones pick a large enough file. */}
             <Image
-              src={`/icons/social/${platform}.svg`}
+              src={`/icons/social/${platform}.png`}
               alt=""
               width={176}
               height={176}
+              sizes="176px"
+              quality={90}
               className="absolute -top-1 -left-1 max-w-none"
             />
           </motion.span>

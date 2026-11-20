@@ -6,6 +6,11 @@ const nextConfig: NextConfig = {
     agentFeedback: true,
   },
   cacheComponents: true,
+  images: {
+    // 90 is used for the social icons, whose sharp edges show compression
+    // artifacts at the default 75.
+    qualities: [75, 90],
+  },
   partialPrefetching: true,
   turbopack: {
     rules: {
