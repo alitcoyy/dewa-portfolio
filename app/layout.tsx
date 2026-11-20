@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     template: "%s · Dewa Alit",
   },
   description:
-    "Dewa Alit, fullstack developer in Denpasar, Bali. Portfolio, social links and more.",
+    "Dewa Alit, fullstack web developer in Denpasar, Bali. Websites for businesses, portfolios and events: WordPress, Webflow, custom Next.js and AI automation.",
 };
 
 // "cover" lets the bottom nav respect the iPhone home-indicator area.

@@ -13,10 +13,13 @@ export const cardVariants = {
   tap: { y: -1, scale: 0.97 },
 };
 
-/** Icon on a hovered card: grow and tilt a little. */
+/**
+ * Icon on a hovered card: hop up 2px. Whole-pixel moves only: scaling or
+ * rotating the icon image resamples it and its edges go soft.
+ */
 export const iconVariants = {
-  rest: { scale: 1, rotate: 0 },
-  hover: { scale: 1.08, rotate: -6 },
+  rest: { y: 0 },
+  hover: { y: -2 },
 };
 
 /** External-link arrow on a hovered card: nudge towards the corner. */

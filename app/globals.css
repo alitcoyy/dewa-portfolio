@@ -40,15 +40,15 @@
   --color-email: #143061;
   --color-facebook-light: #35a5ee;
   --color-facebook-dark: #1264d6;
-  --color-github-light: #25262f;
-  --color-github-dark: #0c0d16;
+  --color-whatsapp-light: #25d366; /* WhatsApp brand green */
+  --color-whatsapp-dark: #0e7c66; /* deeper at the bottom so white text reads */
   --color-instagram-light: #313030; /* Figma card colours in the design */
   --color-instagram-dark: #121313;
   --color-linkedin-light: #fbfbfc; /* Dev card colours in the design */
   --color-linkedin-dark: #dbdbdb;
 
   /* Small UI */
-  --color-chip: #d9d9d9; /* "Follow" pill */
+  --color-chip: #d9d9d9; /* badge pill on a card, e.g. "Chat" */
   --color-border: #000000;
   --color-line: rgb(255 255 255 / 0.1); /* hairline borders on dark */
   --color-surface: rgb(255 255 255 / 0.06); /* inputs, active nav item */
@@ -65,7 +65,7 @@
   --text-body--line-height: 0.9375rem; /* 15px */
   --text-caption: 0.625rem; /* 10px, card handles, location */
   --text-caption--line-height: 0.75rem; /* 12px */
-  --text-micro: 0.5625rem; /* 9px, "Follow" chip */
+  --text-micro: 0.5625rem; /* 9px, badge pills and tags */
   --text-micro--line-height: 0.6875rem; /* 11px */
 
   --tracking-title: -0.03125rem; /* -0.5px */
@@ -118,11 +118,12 @@
      properties, so they combine with Motion's hover transforms instead of
      overriding them. */
   --animate-wander: wander 24s ease-in-out infinite; /* glows drift around */
-  --animate-float: float 6s ease-in-out infinite; /* avatar bob */
-  --animate-float-sm: float-sm 4s ease-in-out infinite; /* icon bob */
+  /* Avatar bob. Not used on the social icons: a moving image sits between
+     pixels and its crisp edges blur, so icons stay still. */
+  --animate-float: float 6s ease-in-out infinite;
   --animate-orbit: orbit 6s linear infinite; /* avatar ring */
   --animate-shimmer: shimmer 6s linear infinite; /* gradient text */
-  --animate-marquee: marquee 28s linear infinite; /* skills strip */
+  --animate-marquee: marquee 50s linear infinite; /* skills strip (longer list = longer loop, same speed) */
   --animate-shine: shine 8s ease-in-out infinite; /* light sweep on cards */
   --animate-twinkle: twinkle 12s ease-in-out infinite; /* particles */
   --animate-bob: bob 2.6s ease-in-out infinite; /* 💻 */
@@ -158,11 +159,6 @@
   @keyframes float {
     50% {
       translate: 0 -6px;
-    }
-  }
-  @keyframes float-sm {
-    50% {
-      translate: 0 -3px;
     }
   }
   @keyframes orbit {
@@ -268,11 +264,6 @@
 /* Cascade delay: set --i (0, 1, 2…) on each element, e.g. style={stagger(2)} */
 @utility stagger {
   animation-delay: calc(var(--i, 0) * 70ms);
-}
-
-/* Puts each looping item at a different point in its cycle (uses --i) */
-@utility loop-offset {
-  animation-delay: calc(var(--i, 0) * -0.9s);
 }
 
 /* Name and page titles: a band of the glow colours sweeps through the text */

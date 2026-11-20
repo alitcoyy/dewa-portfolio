@@ -16,8 +16,8 @@ const themes: Record<
     card: "bg-linear-to-b from-facebook-light to-facebook-dark shadow-card",
     iconBox: "size-12",
   },
-  github: {
-    card: "bg-linear-to-b from-github-light to-github-dark",
+  whatsapp: {
+    card: "bg-linear-to-b from-whatsapp-light to-whatsapp-dark",
     iconBox: "size-12",
   },
   instagram: {
@@ -43,7 +43,7 @@ export function SocialLinkCard({
   handle,
   href,
   size,
-  follow,
+  badge,
 }: SocialLink) {
   const theme = themes[platform];
   const external = !href.startsWith("mailto:");
@@ -64,8 +64,7 @@ export function SocialLinkCard({
           <motion.span
             variants={iconVariants}
             transition={spring}
-            // Idle float; loop-offset puts each card's icon at a different phase
-            className={`relative shrink-0 animate-float-sm loop-offset ${theme.iconBox}`}
+            className={`relative shrink-0 ${theme.iconBox}`}
           >
             <Image
               src={`/icons/social/${platform}.svg`}
@@ -75,9 +74,9 @@ export function SocialLinkCard({
               className="absolute -top-1 -left-1 max-w-none"
             />
           </motion.span>
-          {follow && (
+          {badge && (
             <span className="relative mt-2.5 rounded-chip border border-border bg-chip px-3 py-0.75 text-micro text-ink-inverse">
-              Follow
+              {badge}
             </span>
           )}
         </div>

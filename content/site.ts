@@ -2,9 +2,9 @@
 // components only decide how it looks.
 
 export type SocialPlatform =
+  | "whatsapp"
   | "email"
   | "facebook"
-  | "github"
   | "instagram"
   | "linkedin";
 
@@ -13,11 +13,17 @@ export type SocialLink = {
   label: string;
   handle: string;
   href: string;
-  /** Grid footprint: small = 1 cell, wide = full row, tall = 2 rows */
+  /** Grid footprint on phones: small = 1 cell, wide = full row, tall = 2 rows */
   size: "small" | "wide" | "tall";
-  /** Shows the "Follow" pill next to the icon */
-  follow?: boolean;
+  /** Optional pill next to the icon, e.g. "Chat" */
+  badge?: string;
 };
+
+// WhatsApp: number in international format without "+", and the message
+// visitors start with. wa.me opens the app on phones, WhatsApp Web on desktop.
+const whatsappNumber = "6287860985696";
+const whatsappMessage =
+  "Hi Dewa, I’m interested in consulting with you about creating a website for my [business / portfolio / wedding invitation]. Would you be available to discuss this soon?";
 
 export type Project = {
   /** Used in the URL: /portfolio/<slug> */
@@ -53,10 +59,11 @@ export const profile = {
   tagline: {
     emoji: "⚡",
     phrases: [
-      "Frontend flair. Backend brains.",
-      "From pixels to databases.",
-      "Clean UI, solid code underneath.",
-      "Building the web, front to back.",
+      "Websites that grow your business.",
+      "Need a website? Let’s build it.",
+      "WordPress, Webflow or custom code.",
+      "Fast, modern sites for your brand.",
+      "AI automation for your business.",
     ],
   },
   location: "Denpasar, Bali",
@@ -68,12 +75,26 @@ export const profile = {
     "Node.js",
     "Tailwind CSS",
     "PostgreSQL",
+    "WordPress",
+    "Webflow",
+    "Beaver Builder",
+    "Elementor",
+    "AI Automation",
+    "AI Integration",
     "REST APIs",
     "Git",
   ],
 };
 
 export const socials: SocialLink[] = [
+  {
+    platform: "whatsapp",
+    label: "WhatsApp",
+    handle: "+62 878-6098-5696",
+    href: `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`,
+    size: "wide",
+    badge: "Chat",
+  },
   {
     platform: "email",
     label: "Email",
@@ -87,14 +108,6 @@ export const socials: SocialLink[] = [
     handle: "@alitcoy14",
     href: "https://www.facebook.com/alitcoy14/",
     size: "small",
-  },
-  {
-    platform: "github",
-    label: "GitHub",
-    handle: "@alitcoyy",
-    href: "https://github.com/alitcoyy",
-    size: "wide",
-    follow: true,
   },
   {
     platform: "instagram",
