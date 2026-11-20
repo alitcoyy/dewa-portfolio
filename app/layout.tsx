@@ -37,9 +37,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="relative min-h-dvh">
         <MotionProvider>
           <Background />
-          {/* Same column on every page: 393px wide like the Figma frame.
+          {/* Phones: one 393px column like the Figma frame. Tablet/desktop:
+              wider, and each page decides how to use the space.
               Bottom padding leaves room for the floating nav. */}
-          <main className="mx-auto max-w-98.25 px-gutter pt-11.25 pb-28">
+          <main className="mx-auto max-w-mobile px-gutter pt-11.25 pb-28 md:max-w-page lg:px-gutter-lg lg:pt-16">
             {children}
           </main>
           <GlowOverlay />

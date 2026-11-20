@@ -81,6 +81,14 @@
   --spacing-stack: 0.4375rem; /* 7px, gap in text stacks */
   --spacing-section: 1.6875rem; /* 27px, between blocks in the profile panel */
   --spacing-avatar: 12.5rem; /* 200px, avatar size */
+  --spacing-gutter-lg: 2.5rem; /* 40px, page side padding on desktop */
+  --spacing-column: 2.5rem; /* 40px, gap between desktop columns */
+
+  /* ---------- Layout widths (max-w-*) ---------- */
+  --container-mobile: 24.5625rem; /* 393px, the Figma frame */
+  --container-profile: 22.0625rem; /* 353px, profile card column on desktop */
+  --container-reading: 42rem; /* 672px, project pages and forms */
+  --container-page: 72rem; /* 1152px, widest content on desktop */
 
   /* ---------- Radius ---------- */
   --radius-chip: 0.3125rem; /* 5px */
@@ -240,6 +248,11 @@
 /* Social grid: wide left column, narrow right column (196 : 114 in Figma) */
 @utility grid-cols-socials {
   grid-template-columns: minmax(0, 196fr) minmax(0, 114fr);
+}
+
+/* Desktop home: profile card column + everything else */
+@utility grid-cols-home {
+  grid-template-columns: var(--container-profile) minmax(0, 1fr);
 }
 
 /* Cuts the avatar notch out of the top of the profile panel.

@@ -5,6 +5,7 @@ import { Card } from "@/components/Card";
 import { PageHeader } from "@/components/PageHeader";
 import { PageTransition } from "@/components/PageTransition";
 import { projectTitleTransition, Tag } from "@/components/ProjectCard";
+import { ProjectCover } from "@/components/ProjectCover";
 import { projects } from "@/content/site";
 import { spring, stagger } from "@/lib/motion";
 import * as motion from "motion/react-client";
@@ -33,7 +34,8 @@ export default async function ProjectPage({
   const { slug, title, year, description, tags, links } = project;
 
   return (
-    <PageTransition>
+    // Comfortable reading width on large screens
+    <PageTransition className="mx-auto max-w-reading">
       <Link
         href="/portfolio"
         transitionTypes={["nav-back"]}
@@ -47,8 +49,14 @@ export default async function ProjectPage({
 
       <PageHeader title={title} subtitle={year} transitionName={projectTitleTransition(slug)} />
 
+      <ProjectCover
+        project={project}
+        index={projects.indexOf(project)}
+        className="mt-section h-40 animate-rise md:h-56"
+      />
+
       <Card
-        className="mt-section flex animate-rise flex-col gap-4 bg-linear-to-b from-panel-light to-panel-dark px-card-x py-4 stagger"
+        className="mt-grid flex animate-rise flex-col gap-4 bg-linear-to-b from-panel-light to-panel-dark px-card-x py-4 stagger"
         style={stagger(1)}
       >
         {description.map((paragraph) => (

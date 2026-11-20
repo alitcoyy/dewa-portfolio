@@ -13,10 +13,16 @@ const direction = {
  * Wrap each page's content in this. It has to live in page.tsx files, not
  * the layout: layouts persist between pages, so they never "enter" or "exit".
  */
-export function PageTransition({ children }: { children: ReactNode }) {
+export function PageTransition({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
   return (
     <ViewTransition enter={direction} exit={direction} default="none">
-      <div>{children}</div>
+      <div className={className}>{children}</div>
     </ViewTransition>
   );
 }

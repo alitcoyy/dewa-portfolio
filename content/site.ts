@@ -30,6 +30,9 @@ export type Project = {
   description: string[];
   tags: string[];
   links?: { live?: string; source?: string };
+  /** Optional screenshot in /public, e.g. "/images/my-project.png".
+      Without one, the card shows a gradient cover with the initials. */
+  cover?: string;
 };
 
 export const navigation = [

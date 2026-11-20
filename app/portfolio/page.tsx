@@ -11,7 +11,8 @@ export default function PortfolioPage() {
   return (
     <PageTransition>
       <PageHeader title="Portfolio" subtitle="Things I've designed and built" />
-      <ul className="mt-section grid gap-grid">
+      {/* 1 column on phones, 2 on tablets, 3 on desktop */}
+      <ul className="mt-section grid gap-grid md:grid-cols-2 lg:grid-cols-3">
         {projects.map((project, i) => (
           <li key={project.slug} className="animate-rise stagger" style={stagger(i + 1)}>
             <ProjectCard {...project} />
